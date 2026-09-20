@@ -71,7 +71,9 @@ function getRecommendationRating(book: Recommendation) {
 }
 
 function getRecommendationGenres(book: Recommendation) {
-  if (!book.genres) return "";
+  if (!book.genres) {
+    return "";
+  }
 
   if (Array.isArray(book.genres)) {
     return book.genres.join(" • ");
@@ -87,18 +89,25 @@ export default function Home() {
 
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
   const [recommendations, setRecommendations] = useState<
     Recommendation[]
   >([]);
+
   const [error, setError] = useState("");
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const isProduction = useMemo(() => {
-    if (typeof window === "undefined") return false;
-    return window.location.hostname !== "localhost" &&
-      window.location.hostname !== "127.0.0.1";
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    return (
+      window.location.hostname !== "localhost" &&
+      window.location.hostname !== "127.0.0.1"
+    );
   }, []);
 
   useEffect(() => {
@@ -197,15 +206,14 @@ export default function Home() {
     } catch (err) {
       console.error("Chat request failed:", err);
 
-      const localOrProductionMessage = isProduction
-        ? "The library service is currently unavailable. Please check the deployed backend and try again."
-        : "I could not connect to the FastAPI backend. Make sure the backend is running on http://127.0.0.1:8000.";
-
-      setError(
-        err instanceof Error && err.message
+      const errorText =
+        err instanceof Error
           ? err.message
-          : localOrProductionMessage
-      );
+          : isProduction
+            ? "The library service is currently unavailable."
+            : "Unable to connect to the FastAPI backend.";
+
+      setError(errorText);
 
       const errorMessage: Message = {
         id: `${Date.now()}-error`,
@@ -227,7 +235,9 @@ export default function Home() {
     }
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
     await sendMessage();
   }
@@ -261,8 +271,7 @@ export default function Home() {
       <div
         className="fixed inset-0 -z-20 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage:
-            "url('/library-bg.png')",
+          backgroundImage: "url('/library-bg.png')",
         }}
       />
 
@@ -355,6 +364,7 @@ export default function Home() {
                 <p className="text-[9px] uppercase tracking-[0.34em] text-[#d4b57a]/55">
                   Conversation
                 </p>
+
                 <p className="mt-1 font-serif text-sm text-[#eee2cc]/80">
                   Speak with the librarian
                 </p>
@@ -414,13 +424,19 @@ export default function Home() {
 
                     <div className="flex items-center gap-2">
                       <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#c8a56d]" />
+
                       <span
                         className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#c8a56d]"
-                        style={{ animationDelay: "120ms" }}
+                        style={{
+                          animationDelay: "120ms",
+                        }}
                       />
+
                       <span
                         className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#c8a56d]"
-                        style={{ animationDelay: "240ms" }}
+                        style={{
+                          animationDelay: "240ms",
+                        }}
                       />
                     </div>
                   </div>
