@@ -1,5 +1,5 @@
 [README (1).md](https://github.com/user-attachments/files/32432014/README.1.md)
-# AI-Book-Recommender# AI Book Recommender
+AI Book Recommender
 
 A conversational, RAG-based AI book recommendation system that combines semantic retrieval, reranking, and an instruction-tuned LLM to recommend books from a curated Goodreads-derived dataset.
 
