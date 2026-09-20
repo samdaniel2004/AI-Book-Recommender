@@ -21,7 +21,6 @@ frontend/out/
 
 # Generated RAG artifacts
 embeddings/
-vectorstore/
 
 # IDE
 .vscode/
